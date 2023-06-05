@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subir imagen y hacer inferencia</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#formulario-subida').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                
+                $.ajax({
+                    url: '/subir-imagen',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#resultado-subida').text('Imagen subida correctamente.');
+                    },
+                    error: function(error) {
+                        $('#resultado-subida').text('Error al subir la imagen.');
+                    }
+                });
+            });
+            
+            $('#formulario-inferencia').submit(function(e) {
+                e.preventDefault();
+                
+                $.ajax({
+                    url: '/inferencia',
+                    type: 'POST',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#resultado-inferencia').text('Resultado de la inferencia: ' + response.resultado);
+                    },
+                    error: function(error) {
+                        $('#resultado-inferencia').text('Error al realizar la inferencia.');
+                    }
+                });
+            });
+            $('#formulario-inferencia-stream').submit(function(e) {
+                e.preventDefault();
+                
+                $.ajax({
+                    url: '/inferencia-stream',
+                    type: 'POST',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#resultado-inferencia-stream').text('Resultado de la inferencia: ' + response.resultado);
+                    },
+                    error: function(error) {
+                        $('#resultado-inferencia-stream').text('Error al realizar la inferencia.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Subir imagen y hacer inferencia</h1>
+    
+    <h2>Subir imagen</h2>
+    <form id="formulario-subida" enctype="multipart/form-data">
+        <input type="file" name="imagen" accept="image/*" required>
+        <input type="submit" value="Subir">
+    </form>
+    <p id="resultado-subida"></p>
+    
+    <h2>Realizar inferencia</h2>
+    <form id="formulario-inferencia">
+        <input type="submit" value="Realizar inferencia">
+    </form>
+    <p id="resultado-inferencia"></p>
+</body>
+    <h2>Realizar inferencia en video</h2>
+    <form id="formulario-inferencia-stream">
+        <input type="submit" value="Realizar inferencia en stream">
+    </form>
+    <p id="resultado-inferencia-stream"></p>
+</body>
+</html>
+
